@@ -1,0 +1,99 @@
+export interface SnippetRequest {
+  method: string;
+  url: string;
+  headers?: Record<string, string>;
+  body?: unknown;
+}
+
+export interface SnippetOptions {
+  includeAuthHeader?: boolean;
+}
+
+function isAuthorizationHeader(headerName: string): boolean {
+  return headerName.toLowerCase() === 'authorization';
+}
+
+function normalizeHeaderValue(name: string, value: string, includeAuthHeader: boolean): string {
+  if (isAuthorizationHeader(name) && !includeAuthHeader) {
+    return 'Bearer <REDACTED>';
+  }
+
+  return value;
+}
+
+function sanitizeHeaders(
+  headers: Record<string, string> | undefined,
+  includeAuthHeader: boolean
+): Record<string, string> {
+  if (!headers) {
+    return {};
+  }
+
+  const result: Record<string, string> = {};
+
+  for (const [name, value] of Object.entries(headers)) {
+    result[name] = normalizeHeaderValue(name, value, includeAuthHeader);
+  }
+
+  return result;
+}
+
+function shellEscape(value: string): string {
+  return `'${value.replace(/'/g, `'"'"'`)}'`;
+}
+
+function serializeBody(body: unknown): string | undefined {
+  if (body === undefined) {
+    return undefined;
+  }
+
+  if (typeof body === 'string') {
+    return body;
+  }
+
+  try {
+    return JSON.stringify(body);
+  } catch {
+    return String(body);
+  }
+}
+
+export function generateCurlSnippet(request: SnippetRequest, options?: SnippetOptions): string {
+  const includeAuthHeader = options?.includeAuthHeader ?? false;
+  const headers = sanitizeHeaders(request.headers, includeAuthHeader);
+
+  const parts: string[] = ['curl'];
+
+  parts.push('-X', request.method.toUpperCase());
+  parts.push(shellEscape(request.url));
+
+  for (const [name, value] of Object.entries(headers)) {
+    parts.push('-H', shellEscape(`${name}: ${value}`));
+  }
+
+  const body = serializeBody(request.body);
+  if (body !== undefined) {
+    parts.push('--data-raw', shellEscape(body));
+  }
+
+  return parts.join(' ');
+}
+
+export function generateFetchSnippet(request: SnippetRequest, options?: SnippetOptions): string {
+  const includeAuthHeader = options?.includeAuthHeader ?? false;
+  const headers = sanitizeHeaders(request.headers, includeAuthHeader);
+
+  const body = serializeBody(request.body);
+  const bodyLine = body ? `  body: ${JSON.stringify(body)},\n` : '';
+
+  return [
+    `const response = await fetch(${JSON.stringify(request.url)}, {`,
+    `  method: ${JSON.stringify(request.method.toUpperCase())},`,
+    `  headers: ${JSON.stringify(headers, null, 2).replace(/\n/g, '\n  ')},`,
+    bodyLine.trimEnd(),
+    '});',
+    'const data = await response.json();'
+  ]
+    .filter((line) => line.length > 0)
+    .join('\n');
+}

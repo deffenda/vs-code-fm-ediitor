@@ -1,0 +1,187 @@
+:root {
+  --bg: #f4f6f8;
+  --panel: #ffffff;
+  --text: #1f2933;
+  --muted: #5f6c7b;
+  --accent: #0f766e;
+  --accent-strong: #115e59;
+  --border: #d0d7de;
+  --error: #b42318;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Avenir Next', 'Segoe UI', sans-serif;
+  background: radial-gradient(circle at top right, #d9f3ef 0%, var(--bg) 50%);
+  color: var(--text);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 18px;
+  display: grid;
+  gap: 16px;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 1.35rem;
+}
+
+.header p {
+  margin: 4px 0 0;
+  color: var(--muted);
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.row,
+.grid > div,
+.saved {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+label {
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+select,
+textarea,
+input {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-family: 'SF Mono', Menlo, monospace;
+  font-size: 0.9rem;
+  background: #fff;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0;
+}
+
+.actions.compact {
+  align-items: center;
+}
+
+.row.inline {
+  flex-direction: row;
+  align-items: center;
+}
+
+button {
+  border: none;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  padding: 8px 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:hover {
+  background: var(--accent-strong);
+}
+
+.toggle {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.status {
+  margin: 0;
+  color: var(--muted);
+}
+
+.status.error {
+  color: var(--error);
+  font-weight: 600;
+}
+
+.summary {
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.history {
+  overflow: auto;
+}
+
+.table-wrap {
+  overflow: auto;
+}
+
+.virtual-wrap {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  text-align: left;
+  padding: 6px 8px;
+  font-size: 0.86rem;
+}
+
+th {
+  background: #f8fafc;
+}
+
+.raw {
+  background: #0b1020;
+  color: #d6deeb;
+  padding: 12px;
+  border-radius: 8px;
+  overflow: auto;
+  max-height: 360px;
+}
+
+.hidden {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .container {
+    padding: 10px;
+  }
+
+  button {
+    flex: 1;
+  }
+}

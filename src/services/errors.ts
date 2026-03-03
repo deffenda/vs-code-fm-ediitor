@@ -1,0 +1,81 @@
+import type { NormalizedError, NormalizedErrorKind } from '../types/errors';
+
+export class FMClientError extends Error {
+  public readonly status?: number;
+  public readonly code?: string;
+  public readonly details?: unknown;
+  public readonly requestId?: string;
+  public readonly endpoint?: string;
+  public readonly safeHeaders?: Record<string, string>;
+  public readonly kind?: NormalizedErrorKind;
+  public readonly isRetryable: boolean;
+
+  public constructor(
+    message: string,
+    options?: {
+      status?: number;
+      code?: string;
+      details?: unknown;
+      requestId?: string;
+      endpoint?: string;
+      safeHeaders?: Record<string, string>;
+      kind?: NormalizedErrorKind;
+      isRetryable?: boolean;
+    }
+  ) {
+    super(message);
+    this.name = 'FMClientError';
+    this.status = options?.status;
+    this.code = options?.code;
+    this.details = options?.details;
+    this.requestId = options?.requestId;
+    this.endpoint = options?.endpoint;
+    this.safeHeaders = options?.safeHeaders;
+    this.kind = options?.kind;
+    this.isRetryable = options?.isRetryable ?? false;
+  }
+
+  public toNormalized(): NormalizedError {
+    return {
+      kind: this.kind ?? inferKindFromStatus(this.status),
+      message: this.message,
+      status: this.status,
+      code: this.code,
+      requestId: this.requestId,
+      endpoint: this.endpoint,
+      safeHeaders: this.safeHeaders,
+      details: this.details,
+      isRetryable: this.isRetryable,
+      originalName: this.name
+    };
+  }
+}
+
+function inferKindFromStatus(status: number | undefined): NormalizedErrorKind {
+  if (status === 401 || status === 403) {
+    return 'auth';
+  }
+
+  if (typeof status === 'number' && status >= 400 && status < 500) {
+    return 'validation';
+  }
+
+  if (typeof status === 'number' && status >= 500) {
+    return 'server';
+  }
+
+  return 'unknown';
+}
+
+export function toFMClientError(normalized: NormalizedError): FMClientError {
+  return new FMClientError(normalized.message, {
+    status: normalized.status,
+    code: normalized.code,
+    details: normalized.details,
+    requestId: normalized.requestId,
+    endpoint: normalized.endpoint,
+    safeHeaders: normalized.safeHeaders,
+    kind: normalized.kind,
+    isRetryable: normalized.isRetryable
+  });
+}
