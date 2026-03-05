@@ -1,0 +1,116 @@
+import { mkdir, readFile, rm } from 'fs/promises';
+import path from 'path';
+
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+import type { ConnectionProfile } from '../../src/types/fm';
+import { FmWebProjectService } from '../../src/services/fmWebProjectService';
+
+const WORKSPACE_ROOT = '/tmp/workspace';
+
+const logger = {
+  debug: vi.fn(),
+  info: vi.fn(),
+  warn: vi.fn(),
+  error: vi.fn()
+};
+
+const profile: ConnectionProfile = {
+  id: 'profile-1',
+  name: 'Local Profile',
+  serverUrl: 'https://example.com',
+  database: 'AppDB',
+  authMode: 'direct',
+  username: 'dev'
+};
+
+describe('FmWebProjectService', () => {
+  beforeEach(async () => {
+    await mkdir(WORKSPACE_ROOT, { recursive: true });
+    await rm(path.join(WORKSPACE_ROOT, '.fmweb'), { recursive: true, force: true });
+  });
+
+  it('initializes project folders and config', async () => {
+    const service = new FmWebProjectService(
+      createProfileStoreStub(),
+      createFmClientStub(),
+      createSchemaServiceStub(),
+      logger
+    );
+
+    const project = await service.initializeProject('Demo');
+
+    expect(project.name).toBe('Demo');
+
+    const configRaw = await readFile(path.join(WORKSPACE_ROOT, '.fmweb', 'project.json'), 'utf8');
+    const config = JSON.parse(configRaw) as { name: string };
+    expect(config.name).toBe('Demo');
+  });
+
+  it('syncs metadata into local cache for offline usage', async () => {
+    const service = new FmWebProjectService(
+      createProfileStoreStub(),
+      createFmClientStub({
+        listLayouts: vi.fn(async () => ['Contacts']),
+        listScripts: vi.fn(async () => ['Run_Startup']),
+        getLayoutMetadata: vi.fn(async () => ({
+          fieldMetaData: [{ name: 'FirstName' }, { name: 'LastName' }],
+          tableOccurrence: 'TO_Contacts'
+        }))
+      }),
+      createSchemaServiceStub(),
+      logger
+    );
+
+    await service.initializeProject();
+    const summary = await service.syncMetadata(profile);
+
+    expect(summary.layoutCount).toBe(1);
+    expect(summary.scriptCount).toBe(1);
+    expect(summary.fieldCount).toBe(2);
+
+    const cacheRaw = await readFile(path.join(WORKSPACE_ROOT, '.fmweb', 'metadata', 'index.json'), 'utf8');
+    const cache = JSON.parse(cacheRaw) as { layouts: string[]; scripts: string[] };
+
+    expect(cache.layouts).toEqual(['Contacts']);
+    expect(cache.scripts).toEqual(['Run_Startup']);
+  });
+});
+
+function createProfileStoreStub(): {
+  setActiveProfileId: (profileId: string) => Promise<void>;
+} {
+  return {
+    setActiveProfileId: vi.fn(async () => undefined)
+  };
+}
+
+function createFmClientStub(overrides?: {
+  listLayouts?: (profile: ConnectionProfile) => Promise<string[]>;
+  listScripts?: (profile: ConnectionProfile) => Promise<string[]>;
+  getLayoutMetadata?: (
+    profile: ConnectionProfile,
+    layoutName: string
+  ) => Promise<Record<string, unknown>>;
+}): {
+  listLayouts: (profile: ConnectionProfile) => Promise<string[]>;
+  listScripts: (profile: ConnectionProfile) => Promise<string[]>;
+  getLayoutMetadata: (profile: ConnectionProfile, layoutName: string) => Promise<Record<string, unknown>>;
+} {
+  return {
+    listLayouts: overrides?.listLayouts ?? (async () => ['Main']),
+    listScripts: overrides?.listScripts ?? (async () => []),
+    getLayoutMetadata: overrides?.getLayoutMetadata ?? (async () => ({}))
+  };
+}
+
+function createSchemaServiceStub(): {
+  getLayoutSchema: (
+    profile: ConnectionProfile,
+    layoutName: string
+  ) => Promise<{ fields: Array<{ name: string }> }>;
+} {
+  return {
+    getLayoutSchema: vi.fn(async () => ({ fields: [] }))
+  };
+}

@@ -1,6 +1,0 @@
-.github/**
-src/**
-test/**
-dist/**/*.map
-tsconfig*.json
-vitest.config.ts

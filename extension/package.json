@@ -1,0 +1,656 @@
+{
+  "name": "filemaker-data-api-tools",
+  "displayName": "FileMaker Data API Tools",
+  "description": "VS Code tools for working with the FileMaker Data API (fmrest).",
+  "version": "0.5.1",
+  "publisher": "your-org",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://example.com/your-org/filemaker-data-api-tools.git"
+  },
+  "engines": {
+    "vscode": "^1.96.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onView:filemakerExplorer",
+    "onCommand:filemakerDataApiTools.addConnectionProfile",
+    "onCommand:filemakerDataApiTools.editConnectionProfile",
+    "onCommand:filemakerDataApiTools.removeConnectionProfile",
+    "onCommand:filemakerDataApiTools.connect",
+    "onCommand:filemakerDataApiTools.disconnect",
+    "onCommand:filemakerDataApiTools.listLayouts",
+    "onCommand:filemakerDataApiTools.runFindJson",
+    "onCommand:filemakerDataApiTools.getRecordById",
+    "onCommand:filemakerDataApiTools.openRecordViewer",
+    "onCommand:filemakerDataApiTools.openQueryBuilder",
+    "onCommand:filemakerDataApiTools.openLayoutMetadata",
+    "onCommand:filemakerDataApiTools.refreshSchemaCache",
+    "onCommand:filemakerDataApiTools.openScriptRunner",
+    "onCommand:filemakerDataApiTools.saveCurrentQuery",
+    "onCommand:filemakerDataApiTools.runSavedQuery",
+    "onCommand:filemakerDataApiTools.openSavedQuery",
+    "onCommand:filemakerDataApiTools.manageSavedQueries",
+    "onCommand:filemakerDataApiTools.exportSavedQueries",
+    "onCommand:filemakerDataApiTools.importSavedQueries",
+    "onCommand:filemakerDataApiTools.deleteSavedQuery",
+    "onCommand:filemakerDataApiTools.showRequestHistory",
+    "onCommand:filemakerDataApiTools.refreshExplorer",
+    "onCommand:filemakerDataApiTools.captureSchemaSnapshot",
+    "onCommand:filemakerDataApiTools.diffSchemaSnapshots",
+    "onCommand:filemakerDataApiTools.diffAgainstLatestSnapshot",
+    "onCommand:filemakerDataApiTools.openSchemaSnapshotJson",
+    "onCommand:filemakerDataApiTools.generateTypesForLayout",
+    "onCommand:filemakerDataApiTools.generateTypesForAllLayouts",
+    "onCommand:filemakerDataApiTools.generateSnippetsForLayout",
+    "onCommand:filemakerDataApiTools.openGeneratedTypesFolder",
+    "onCommand:filemakerDataApiTools.openRecordEditor",
+    "onCommand:filemakerDataApiTools.editRecordById",
+    "onCommand:filemakerDataApiTools.batchExportFind",
+    "onCommand:filemakerDataApiTools.batchUpdateFromFile",
+    "onCommand:filemakerDataApiTools.showJobs",
+    "onCommand:filemakerDataApiTools.createEnvironmentSet",
+    "onCommand:filemakerDataApiTools.compareEnvironments",
+    "onCommand:filemakerDataApiTools.diffLayoutAcrossEnvironments",
+    "onCommand:filemakerDataApiTools.exportEnvironmentComparisonReport",
+    "onCommand:filemakerDataApiTools.openEnvironmentSetJson",
+    "onCommand:filemakerDataApiTools.openDiagnosticsDashboard",
+    "onCommand:filemakerDataApiTools.reloadPlugins",
+    "onCommand:filemakerDataApiTools.listActivePlugins",
+    "onCommand:filemakerDataApiTools.toggleOfflineMode",
+    "onCommand:filemakerDataApiTools.refreshOfflineCache",
+    "onCommand:filemakerDataApiTools.initializeFmWebProject",
+    "onCommand:filemakerDataApiTools.syncFmWebMetadata",
+    "onCommand:filemakerDataApiTools.selectActiveProfile",
+    "onCommand:filemakerDataApiTools.openLayoutMode",
+    "onCommand:filemakerDataApiTools.generateFmWebNextApp",
+    "onCommand:filemakerDataApiTools.generateFmWebLayoutPage",
+    "onCommand:filemakerDataApiTools.startFmWebPreviewServer"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "views": {
+      "explorer": [
+        {
+          "id": "filemakerExplorer",
+          "name": "FileMaker Explorer"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "filemakerDataApiTools.addConnectionProfile",
+        "title": "FileMaker: Add Connection Profile"
+      },
+      {
+        "command": "filemakerDataApiTools.editConnectionProfile",
+        "title": "FileMaker: Edit Connection Profile"
+      },
+      {
+        "command": "filemakerDataApiTools.removeConnectionProfile",
+        "title": "FileMaker: Remove Connection Profile"
+      },
+      {
+        "command": "filemakerDataApiTools.connect",
+        "title": "FileMaker: Connect"
+      },
+      {
+        "command": "filemakerDataApiTools.disconnect",
+        "title": "FileMaker: Disconnect"
+      },
+      {
+        "command": "filemakerDataApiTools.listLayouts",
+        "title": "FileMaker: List Layouts"
+      },
+      {
+        "command": "filemakerDataApiTools.runFindJson",
+        "title": "FileMaker: Run Find (JSON)"
+      },
+      {
+        "command": "filemakerDataApiTools.getRecordById",
+        "title": "FileMaker: Get Record by ID"
+      },
+      {
+        "command": "filemakerDataApiTools.openRecordViewer",
+        "title": "FileMaker: Open Record Viewer (by ID)"
+      },
+      {
+        "command": "filemakerDataApiTools.openQueryBuilder",
+        "title": "FileMaker: Open Query Builder"
+      },
+      {
+        "command": "filemakerDataApiTools.openLayoutMetadata",
+        "title": "FileMaker: Open Layout Metadata"
+      },
+      {
+        "command": "filemakerDataApiTools.refreshSchemaCache",
+        "title": "FileMaker: Refresh Schema Cache"
+      },
+      {
+        "command": "filemakerDataApiTools.openScriptRunner",
+        "title": "FileMaker: Open Script Runner"
+      },
+      {
+        "command": "filemakerDataApiTools.saveCurrentQuery",
+        "title": "FileMaker: Save Current Query"
+      },
+      {
+        "command": "filemakerDataApiTools.runSavedQuery",
+        "title": "FileMaker: Run Saved Query"
+      },
+      {
+        "command": "filemakerDataApiTools.openSavedQuery",
+        "title": "FileMaker: Open Saved Query"
+      },
+      {
+        "command": "filemakerDataApiTools.manageSavedQueries",
+        "title": "FileMaker: Manage Saved Queries"
+      },
+      {
+        "command": "filemakerDataApiTools.exportSavedQueries",
+        "title": "FileMaker: Export Saved Queries (JSON)"
+      },
+      {
+        "command": "filemakerDataApiTools.importSavedQueries",
+        "title": "FileMaker: Import Saved Queries (JSON)"
+      },
+      {
+        "command": "filemakerDataApiTools.deleteSavedQuery",
+        "title": "FileMaker: Delete Saved Query"
+      },
+      {
+        "command": "filemakerDataApiTools.showRequestHistory",
+        "title": "FileMaker: Show Request History"
+      },
+      {
+        "command": "filemakerDataApiTools.refreshExplorer",
+        "title": "FileMaker: Refresh Explorer",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "filemakerDataApiTools.captureSchemaSnapshot",
+        "title": "FileMaker: Capture Schema Snapshot"
+      },
+      {
+        "command": "filemakerDataApiTools.diffSchemaSnapshots",
+        "title": "FileMaker: Diff Schema Snapshots"
+      },
+      {
+        "command": "filemakerDataApiTools.diffAgainstLatestSnapshot",
+        "title": "FileMaker: Diff Against Latest Snapshot"
+      },
+      {
+        "command": "filemakerDataApiTools.openSchemaSnapshotJson",
+        "title": "FileMaker: Open Snapshot JSON"
+      },
+      {
+        "command": "filemakerDataApiTools.generateTypesForLayout",
+        "title": "FileMaker: Generate Types for Layout"
+      },
+      {
+        "command": "filemakerDataApiTools.generateTypesForAllLayouts",
+        "title": "FileMaker: Generate Types for All Layouts"
+      },
+      {
+        "command": "filemakerDataApiTools.generateSnippetsForLayout",
+        "title": "FileMaker: Generate Snippets for Layout"
+      },
+      {
+        "command": "filemakerDataApiTools.openGeneratedTypesFolder",
+        "title": "FileMaker: Open Generated Types Folder"
+      },
+      {
+        "command": "filemakerDataApiTools.openRecordEditor",
+        "title": "FileMaker: Open Record Editor"
+      },
+      {
+        "command": "filemakerDataApiTools.editRecordById",
+        "title": "FileMaker: Edit Record by ID"
+      },
+      {
+        "command": "filemakerDataApiTools.batchExportFind",
+        "title": "FileMaker: Batch Export (Find)"
+      },
+      {
+        "command": "filemakerDataApiTools.batchUpdateFromFile",
+        "title": "FileMaker: Batch Update from CSV/JSON"
+      },
+      {
+        "command": "filemakerDataApiTools.showJobs",
+        "title": "FileMaker: Show Jobs"
+      },
+      {
+        "command": "filemakerDataApiTools.createEnvironmentSet",
+        "title": "FileMaker: Create Environment Set"
+      },
+      {
+        "command": "filemakerDataApiTools.compareEnvironments",
+        "title": "FileMaker: Compare Environments"
+      },
+      {
+        "command": "filemakerDataApiTools.diffLayoutAcrossEnvironments",
+        "title": "FileMaker: Diff Layout Across Environments"
+      },
+      {
+        "command": "filemakerDataApiTools.exportEnvironmentComparisonReport",
+        "title": "FileMaker: Export Environment Comparison Report"
+      },
+      {
+        "command": "filemakerDataApiTools.openEnvironmentSetJson",
+        "title": "FileMaker: Open Environment Set JSON"
+      },
+      {
+        "command": "filemakerDataApiTools.openDiagnosticsDashboard",
+        "title": "FileMaker: Open Diagnostics Dashboard"
+      },
+      {
+        "command": "filemakerDataApiTools.reloadPlugins",
+        "title": "FileMaker: Reload Plugins"
+      },
+      {
+        "command": "filemakerDataApiTools.listActivePlugins",
+        "title": "FileMaker: List Active Plugins"
+      },
+      {
+        "command": "filemakerDataApiTools.toggleOfflineMode",
+        "title": "FileMaker: Toggle Offline Mode"
+      },
+      {
+        "command": "filemakerDataApiTools.refreshOfflineCache",
+        "title": "FileMaker: Refresh Cache"
+      },
+      {
+        "command": "filemakerDataApiTools.initializeFmWebProject",
+        "title": "FileMaker: Initialize FM Web Project"
+      },
+      {
+        "command": "filemakerDataApiTools.syncFmWebMetadata",
+        "title": "FileMaker: Sync Metadata"
+      },
+      {
+        "command": "filemakerDataApiTools.selectActiveProfile",
+        "title": "FileMaker: Select Active Profile"
+      },
+      {
+        "command": "filemakerDataApiTools.openLayoutMode",
+        "title": "FileMaker: Open Layout Mode"
+      },
+      {
+        "command": "filemakerDataApiTools.generateFmWebNextApp",
+        "title": "FileMaker: Generate Next.js App"
+      },
+      {
+        "command": "filemakerDataApiTools.generateFmWebLayoutPage",
+        "title": "FileMaker: Generate Layout Page"
+      },
+      {
+        "command": "filemakerDataApiTools.startFmWebPreviewServer",
+        "title": "FileMaker: Start Preview Server"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "filemakerDataApiTools.addConnectionProfile",
+          "when": "view == filemakerExplorer",
+          "group": "navigation@1"
+        },
+        {
+          "command": "filemakerDataApiTools.refreshExplorer",
+          "when": "view == filemakerExplorer",
+          "group": "navigation@2"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "filemakerDataApiTools.connect",
+          "when": "view == filemakerExplorer && viewItem == fmProfile",
+          "group": "inline@1"
+        },
+        {
+          "command": "filemakerDataApiTools.disconnect",
+          "when": "view == filemakerExplorer && viewItem == fmProfileConnected",
+          "group": "inline@2"
+        },
+        {
+          "command": "filemakerDataApiTools.editConnectionProfile",
+          "when": "view == filemakerExplorer && viewItem =~ /^fmProfile/",
+          "group": "navigation@1"
+        },
+        {
+          "command": "filemakerDataApiTools.removeConnectionProfile",
+          "when": "view == filemakerExplorer && viewItem =~ /^fmProfile/",
+          "group": "navigation@2"
+        },
+        {
+          "command": "filemakerDataApiTools.openQueryBuilder",
+          "when": "view == filemakerExplorer && viewItem == fmLayout",
+          "group": "inline@1"
+        },
+        {
+          "command": "filemakerDataApiTools.getRecordById",
+          "when": "view == filemakerExplorer && viewItem == fmLayout",
+          "group": "inline@2"
+        },
+        {
+          "command": "filemakerDataApiTools.openScriptRunner",
+          "when": "view == filemakerExplorer && viewItem == fmLayout",
+          "group": "inline@3"
+        },
+        {
+          "command": "filemakerDataApiTools.openLayoutMetadata",
+          "when": "view == filemakerExplorer && viewItem == fmLayout",
+          "group": "navigation@1"
+        },
+        {
+          "command": "filemakerDataApiTools.runSavedQuery",
+          "when": "view == filemakerExplorer && viewItem == fmSavedQuery",
+          "group": "inline@1"
+        },
+        {
+          "command": "filemakerDataApiTools.openSavedQuery",
+          "when": "view == filemakerExplorer && viewItem == fmSavedQuery",
+          "group": "inline@2"
+        },
+        {
+          "command": "filemakerDataApiTools.deleteSavedQuery",
+          "when": "view == filemakerExplorer && viewItem == fmSavedQuery",
+          "group": "inline@3"
+        },
+        {
+          "command": "filemakerDataApiTools.openRecordEditor",
+          "when": "view == filemakerExplorer && viewItem == fmLayout",
+          "group": "inline@4"
+        },
+        {
+          "command": "filemakerDataApiTools.editRecordById",
+          "when": "view == filemakerExplorer && viewItem == fmLayout",
+          "group": "navigation@2"
+        },
+        {
+          "command": "filemakerDataApiTools.captureSchemaSnapshot",
+          "when": "view == filemakerExplorer && viewItem == fmLayout",
+          "group": "navigation@3"
+        },
+        {
+          "command": "filemakerDataApiTools.diffAgainstLatestSnapshot",
+          "when": "view == filemakerExplorer && viewItem == fmLayout",
+          "group": "navigation@4"
+        },
+        {
+          "command": "filemakerDataApiTools.generateTypesForLayout",
+          "when": "view == filemakerExplorer && viewItem == fmLayout",
+          "group": "navigation@5"
+        },
+        {
+          "command": "filemakerDataApiTools.batchExportFind",
+          "when": "view == filemakerExplorer && viewItem == fmLayout",
+          "group": "navigation@6"
+        },
+        {
+          "command": "filemakerDataApiTools.batchUpdateFromFile",
+          "when": "view == filemakerExplorer && viewItem == fmLayout",
+          "group": "navigation@7"
+        },
+        {
+          "command": "filemakerDataApiTools.openSchemaSnapshotJson",
+          "when": "view == filemakerExplorer && viewItem == fmSchemaSnapshot",
+          "group": "inline@1"
+        },
+        {
+          "command": "filemakerDataApiTools.diffSchemaSnapshots",
+          "when": "view == filemakerExplorer && viewItem == fmSchemaSnapshotsRoot",
+          "group": "inline@1"
+        },
+        {
+          "command": "filemakerDataApiTools.captureSchemaSnapshot",
+          "when": "view == filemakerExplorer && viewItem == fmSchemaSnapshotsRoot",
+          "group": "inline@2"
+        },
+        {
+          "command": "filemakerDataApiTools.generateTypesForAllLayouts",
+          "when": "view == filemakerExplorer && viewItem =~ /^fmProfile/",
+          "group": "navigation@3"
+        },
+        {
+          "command": "filemakerDataApiTools.showJobs",
+          "when": "view == filemakerExplorer && viewItem == fmJobsRoot",
+          "group": "inline@1"
+        },
+        {
+          "command": "filemakerDataApiTools.createEnvironmentSet",
+          "when": "view == filemakerExplorer && viewItem == fmEnvironmentSetsRoot",
+          "group": "inline@1"
+        },
+        {
+          "command": "filemakerDataApiTools.compareEnvironments",
+          "when": "view == filemakerExplorer && viewItem == fmEnvironmentSet",
+          "group": "inline@1"
+        },
+        {
+          "command": "filemakerDataApiTools.diffLayoutAcrossEnvironments",
+          "when": "view == filemakerExplorer && viewItem == fmEnvironmentSet",
+          "group": "inline@2"
+        },
+        {
+          "command": "filemakerDataApiTools.exportEnvironmentComparisonReport",
+          "when": "view == filemakerExplorer && viewItem == fmEnvironmentSet",
+          "group": "inline@3"
+        },
+        {
+          "command": "filemakerDataApiTools.openEnvironmentSetJson",
+          "when": "view == filemakerExplorer && viewItem == fmEnvironmentSet",
+          "group": "navigation@1"
+        },
+        {
+          "command": "filemakerDataApiTools.toggleOfflineMode",
+          "when": "view == filemakerExplorer && viewItem == fmOfflineBadge",
+          "group": "inline@1"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "filemakerDataApiTools.refreshExplorer",
+          "when": "false"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "FileMaker Data API Tools",
+      "properties": {
+        "filemakerDataApiTools.logLevel": {
+          "type": "string",
+          "enum": [
+            "debug",
+            "info",
+            "warn",
+            "error"
+          ],
+          "default": "info",
+          "description": "Minimum log level written to the FileMaker Data API Tools output channel."
+        },
+        "filemakerDataApiTools.requestTimeoutMs": {
+          "type": "number",
+          "default": 15000,
+          "minimum": 1000,
+          "description": "HTTP timeout in milliseconds for FileMaker Data API requests."
+        },
+        "filemakerDataApiTools.defaultApiBasePath": {
+          "type": "string",
+          "default": "/fmi/data",
+          "description": "Default API base path used when a profile does not override it."
+        },
+        "filemakerDataApiTools.defaultApiVersionPath": {
+          "type": "string",
+          "default": "vLatest",
+          "description": "Default FileMaker Data API version segment used when a profile does not override it."
+        },
+        "filemaker.savedQueries.scope": {
+          "type": "string",
+          "enum": [
+            "workspace",
+            "global"
+          ],
+          "default": "workspace",
+          "description": "Scope used to store saved queries."
+        },
+        "filemaker.schema.cacheTtlSeconds": {
+          "type": "number",
+          "default": 300,
+          "minimum": 10,
+          "description": "Schema metadata cache TTL in seconds."
+        },
+        "filemaker.schema.metadataEnabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable layout metadata lookups for schema/field browsing."
+        },
+        "filemaker.history.maxEntries": {
+          "type": "number",
+          "default": 10,
+          "minimum": 1,
+          "description": "Maximum number of request history entries stored per workspace."
+        },
+        "filemaker.snippets.includeAuthByDefault": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether generated curl/fetch snippets include authorization headers by default."
+        },
+        "filemaker.features.scriptRunner.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable Script Runner UI and script execution features."
+        },
+        "filemaker.schema.snapshots.storage": {
+          "type": "string",
+          "enum": [
+            "workspaceState",
+            "workspaceFiles"
+          ],
+          "default": "workspaceFiles",
+          "description": "Storage backend for schema snapshots. In untrusted workspaces, workspaceState is used automatically."
+        },
+        "filemaker.schema.diagnostics.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Publish schema diff changes to the Problems panel when diffing against latest snapshot."
+        },
+        "filemaker.typegen.outputDir": {
+          "type": "string",
+          "default": "filemaker-types",
+          "description": "Workspace output folder for generated TypeScript layout types."
+        },
+        "filemaker.batch.maxRecords": {
+          "type": "number",
+          "default": 10000,
+          "minimum": 1,
+          "description": "Safety cap for batch export record count."
+        },
+        "filemaker.batch.concurrency": {
+          "type": "number",
+          "default": 4,
+          "minimum": 1,
+          "maximum": 10,
+          "description": "Maximum concurrent write operations for batch update execution."
+        },
+        "filemaker.batch.dryRunDefault": {
+          "type": "boolean",
+          "default": true,
+          "description": "Default dry-run mode for batch updates."
+        },
+        "filemaker.features.recordEdit.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable record editor write-back features."
+        },
+        "filemaker.features.batch.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable batch export/update features (auto-disabled in untrusted workspaces)."
+        },
+        "filemaker.enterprise.mode": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable enterprise governance controls and role-based feature gating."
+        },
+        "filemaker.enterprise.role": {
+          "type": "string",
+          "enum": [
+            "viewer",
+            "developer",
+            "admin"
+          ],
+          "default": "developer",
+          "description": "Enterprise role used for feature access control."
+        },
+        "filemaker.logging.level": {
+          "type": "string",
+          "enum": [
+            "debug",
+            "info",
+            "warn",
+            "error"
+          ],
+          "default": "info",
+          "description": "Minimum logging level for FileMaker Data API Tools output."
+        },
+        "filemaker.performance.mode": {
+          "type": "string",
+          "enum": [
+            "standard",
+            "high-scale"
+          ],
+          "default": "standard",
+          "description": "High-scale mode optimizes batch/export workflows for large datasets."
+        },
+        "filemaker.offline.mode": {
+          "type": "boolean",
+          "default": false,
+          "description": "Use cached metadata only and disable write operations."
+        },
+        "filemaker.schema.hashAlgorithm": {
+          "type": "string",
+          "default": "sha256",
+          "description": "Hash algorithm used for schema metadata fingerprinting."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "clean": "rimraf dist",
+    "bundle:extension": "esbuild src/extension.ts --bundle --platform=node --format=cjs --external:vscode --outfile=dist/extension.js",
+    "copy:webviews": "shx mkdir -p dist/webviews/queryBuilder/ui dist/webviews/recordViewer/ui dist/webviews/scriptRunner/ui dist/webviews/schemaDiff/ui dist/webviews/recordEditor/ui dist/webviews/layoutMode/ui && shx cp -r src/webviews/queryBuilder/ui/* dist/webviews/queryBuilder/ui && shx cp -r src/webviews/recordViewer/ui/* dist/webviews/recordViewer/ui && shx cp -r src/webviews/scriptRunner/ui/* dist/webviews/scriptRunner/ui && shx cp -r src/webviews/schemaDiff/ui/* dist/webviews/schemaDiff/ui && shx cp -r src/webviews/recordEditor/ui/* dist/webviews/recordEditor/ui && shx cp -r src/webviews/layoutMode/ui/* dist/webviews/layoutMode/ui && shx cp -r ../designer-ui/dist/* dist/webviews/layoutMode/ui",
+    "build": "npm --prefix ../designer-ui run build && npm run clean && npm run bundle:extension && npm run copy:webviews",
+    "watch": "tsc -w -p .",
+    "lint": "eslint \"src/**/*.ts\" \"test/**/*.ts\" --max-warnings=0",
+    "format": "prettier --write \"**/*.{ts,js,json,md,css,html}\"",
+    "format:check": "prettier --check \"**/*.{ts,js,json,md,css,html}\"",
+    "test": "vitest run",
+    "vscode:prepublish": "npm run build",
+    "typecheck": "tsc -p . --noEmit",
+    "package:check": "vsce package --allow-missing-repository --baseContentUrl https://example.com/your-org/filemaker-data-api-tools/blob/main --baseImagesUrl https://example.com/your-org/filemaker-data-api-tools/raw/main"
+  },
+  "dependencies": {
+    "axios": "^1.11.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@vscode/vsce": "^2.27.0",
+    "@types/node": "^22.15.0",
+    "@types/vscode": "^1.96.0",
+    "@typescript-eslint/eslint-plugin": "^8.33.1",
+    "@typescript-eslint/parser": "^8.33.1",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^10.1.2",
+    "esbuild": "^0.25.0",
+    "nock": "^14.0.5",
+    "prettier": "^3.5.3",
+    "rimraf": "^6.0.1",
+    "shx": "^0.4.0",
+    "typescript": "^5.8.3",
+    "vitest": "^2.1.8"
+  }
+}
